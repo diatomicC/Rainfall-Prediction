@@ -4,7 +4,7 @@ import pandas as pd
 path_to_rainfall = '/Users/diatomicc/Desktop/SEEM3650/Rainfall.csv'
 path_to_windspeed = '/Users/diatomicc/Desktop/SEEM3650/WindSpeed.csv'
 path_to_cloudamount = '/Users/diatomicc/Desktop/SEEM3650/CloudAmount.csv'
-# path_to_dailytemp = '/Users/diatomicc/Desktop/SEEM3650/Daily Temperature data.csv'
+path_to_dailytemp = '/Users/diatomicc/Desktop/SEEM3650/Daily Temperature data.csv'
 path_to_sunlight = '/Users/diatomicc/Desktop/SEEM3650/daily_KP_SUN.csv'
 path_to_humidity = '/Users/diatomicc/Desktop/SEEM3650/daily_HKO_RH_ALL.csv'
 path_to_cloudamount = '/Users/diatomicc/Desktop/SEEM3650/CloudAmount.csv'
@@ -12,14 +12,15 @@ path_to_cloudamount = '/Users/diatomicc/Desktop/SEEM3650/CloudAmount.csv'
 rainfall = pd.read_csv(path_to_rainfall)
 windspeed = pd.read_csv(path_to_windspeed)
 cloudamount = pd.read_csv(path_to_cloudamount)
-# dailytemp = pd.read_csv(path_to_dailytemp)
+
 sun = pd.read_csv(path_to_sunlight)
 humidity = pd.read_csv(path_to_humidity)
 
+temperature = pd.read_csv(path_to_dailytemp)
 
-# Merge the dataframes on the 'Year', 'Month', and 'Day' columns
+# Merge the dataframes on the 'Year', 'Month', and 'Day' columns  Maximum Temperature (°C)""",,"Minimum Temperature (°C)""",,"Mean Temperature (°C)"
 from functools import reduce
-data_frames = [rainfall, windspeed, cloudamount, sun, humidity]
+data_frames = [rainfall, windspeed, cloudamount, sun, humidity, temperature]
 merged_data = reduce(lambda left, right: pd.merge(left, right, on=['Year', 'Month', 'Day']), data_frames)
 
 # Convert 'Year', 'Month', 'Day' to a 'Date' column
@@ -29,7 +30,7 @@ merged_data['Date'] = pd.to_datetime(merged_data[['Year', 'Month', 'Day']])
 merged_data.drop(['Year', 'Month', 'Day'], axis=1, inplace=True)
 
 # Reorder columns to match requested format and keep the 'Date' column
-column_order = ['Date', 'Total Rainfall (mm)', 'Mean Wind Speed (km/h)', 'Mean Amount of Cloud (%)', 'Sun', 'Humidity']
+column_order = ['Date', 'Total Rainfall (mm)', 'Mean Wind Speed (km/h)', 'Mean Amount of Cloud (%)', 'Sun', 'Humidity', 'Maximum Temperature (°C)', 'Minimum Temperature (°C)', 'Mean Temperature (°C)']
 merged_data = merged_data[column_order]
 
 # Save the merged data to a new CSV file
